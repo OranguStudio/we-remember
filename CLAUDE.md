@@ -45,6 +45,50 @@ Format: `type(scope): description`
 - Keep descriptions short and imperative: "add", "fix", "update" not "added", "fixed"
 - Breaking changes: add `!` after type → `feat!: drop Python 3.11 support`
 
+## Development Workflow
+
+### Commit sequencing
+
+Before starting work on an issue, plan the commit sequence.
+Each commit should be atomic: one logical change, independently
+reviewable, and passing CI on its own.
+
+Write the sequence in the issue before touching any code.
+This applies whether you are working manually or with an AI agent —
+the sequence is the plan, and the plan comes first.
+
+**Example — issue #1 (Django project setup):**
+```
+docs: update CLAUDE.md with commit sequencing workflow
+feat: scaffold django project with uv
+feat: add ruff and configure linting
+feat: add pytest and django test config
+feat: add configuration smoke test
+ci: add github actions pipeline (lint + test)
+docs: update README with local setup instructions
+docs: update CLAUDE.md with project conventions
+```
+
+Rules:
+- Infrastructure before features
+- Tooling (linting, testing) before application code
+- CI after tooling is confirmed working locally
+- Docs last — written after the code, not before
+
+### Working with AI agents
+
+AI agents (Claude Code, Codex, etc.) follow the same workflow as
+any contributor: one commit per logical change, conventional commit
+format, CI must pass.
+
+When using an agent, provide the planned commit sequence from the
+issue as context. The agent implements one commit at a time —
+review before moving to the next.
+
+Agents are used for implementation and acceleration, not for
+planning. Planning (issue scoping, commit sequencing, architecture
+decisions) happens before the agent is involved.
+
 ## Releases (release-please)
 
 - Releases are managed automatically via `release-please` GitHub Action
