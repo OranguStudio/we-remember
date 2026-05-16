@@ -61,10 +61,12 @@ the sequence is the plan, and the plan comes first.
 ```
 docs: update CLAUDE.md with commit sequencing workflow
 feat: scaffold django project with uv
+feat(settings): split django settings
+chore: add environment example and ignore local env
 feat: add ruff and configure linting
 feat: add pytest and django test config
 feat: add configuration smoke test
-ci: add github actions pipeline (lint + test)
+ci: add github actions pipeline
 docs: update README with local setup instructions
 docs: update CLAUDE.md with project conventions
 ```
@@ -88,6 +90,27 @@ review before moving to the next.
 Agents are used for implementation and acceleration, not for
 planning. Planning (issue scoping, commit sequencing, architecture
 decisions) happens before the agent is involved.
+
+## Project Conventions
+
+### Django configuration
+
+- The Django project package is `config`
+- Settings are split into:
+  - `config.settings.base` for shared settings
+  - `config.settings.development` for local development and tests
+  - `config.settings.production` for future production configuration
+- `manage.py`, `asgi.py`, and `wsgi.py` default to
+  `config.settings.development`
+- Secrets and environment-specific values are read with `os.environ`
+- The codebase does not load `.env` files directly
+
+### Python tooling
+
+- Runtime and dev dependencies are managed with `uv`
+- Linting uses Ruff: `uv run ruff check .`
+- Tests use pytest and pytest-django: `uv run pytest`
+- Test defaults live in root-level `conftest.py`
 
 ## Releases (release-please)
 
