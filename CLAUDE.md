@@ -77,6 +77,12 @@ Rules:
 - CI after tooling is confirmed working locally
 - Docs last — written after the code, not before
 
+When running `manage.py` commands locally, load environment variables first:
+
+```sh
+set -a && source .env && set +a
+```
+
 ### Working with AI agents
 
 AI agents (Claude Code, Codex, etc.) follow the same workflow as
