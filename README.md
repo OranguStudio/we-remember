@@ -29,6 +29,15 @@ local.
    cp .env.example .env
    ```
 
+4. Load environment variables into the current terminal session:
+
+   ```sh
+   set -a && source .env && set +a
+   ```
+
+   This injects the `.env` values into the current terminal session for
+   development commands.
+
 The Django code reads configuration from environment variables with
 `os.environ`. It does not load `.env` files directly.
 
