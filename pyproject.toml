@@ -18,5 +18,7 @@ line-length = 88
 target-version = "py313"
 
 [tool.pytest.ini_options]
+addopts = "-p conftest"
 DJANGO_SETTINGS_MODULE = "config.settings.development"
+pythonpath = ["."]
 python_files = ["tests.py", "test_*.py", "*_tests.py"]
