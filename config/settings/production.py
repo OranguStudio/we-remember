@@ -1,3 +1,5 @@
 from .base import *  # noqa: F403
 
-# Production-specific settings will be configured in a later issue.
+DEBUG = False
+
+STATIC_ROOT = BASE_DIR / "staticfiles"  # noqa: F405
