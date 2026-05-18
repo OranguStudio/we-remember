@@ -110,6 +110,7 @@ decisions) happens before the agent is involved.
   `config.settings.development`
 - Secrets and environment-specific values are read with `os.environ`
 - The codebase does not load `.env` files directly
+- First-party Django apps live under `apps/`
 
 ### Python tooling
 
@@ -117,6 +118,23 @@ decisions) happens before the agent is involved.
 - Linting uses Ruff: `uv run ruff check .`
 - Tests use pytest and pytest-django: `uv run pytest`
 - Test defaults live in root-level `conftest.py`
+
+### Containerization
+
+- Production images use `python:3.13-slim-trixie` for Debian/glibc wheel
+  compatibility without Alpine musl issues.
+- Dockerfiles use a multi-stage build: a `builder` stage installs runtime
+  dependencies with `uv`, and a `runtime` stage copies only the application
+  code and installed virtualenv.
+- The runtime container uses `config.settings.production` and runs Gunicorn
+  against `config.wsgi:application`.
+- `GUNICORN_WORKERS` defaults to 2. On a VPS, set it explicitly using the
+  Gunicorn sync-worker guideline of `2 * CPU + 1`.
+- Compose config uses a single `web` service for v0.0 and reads `.env` with
+  `env_file`; Django still reads configuration from `os.environ`.
+- For v0.0 self-hosting, `env_file` is sufficient. Before a v1.0 cloud
+  launch, migrate runtime secrets to Docker secrets and add a `_read_secret()`
+  helper in `config/settings/base.py`.
 
 ## Releases (release-please)
 
